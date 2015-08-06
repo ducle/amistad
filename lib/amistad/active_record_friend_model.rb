@@ -62,10 +62,10 @@ module Amistad
     def friends
       friendship_model = Amistad::Friendships.const_get(:"#{Amistad.friendship_model}")
 
-      approved_friendship = friendship_model.where(friendable_id: id, pending: false, blocker_id: nil).pluck(:friend_id)
+      #approved_friendship = friendship_model.where(friendable_id: id, pending: false, blocker_id: nil).pluck(:friend_id)
       approved_inverse_friendship = friendship_model.where(friend_id: id, pending: false, blocker_id: nil).pluck(:friendable_id)
-      self.class.where("id in (:friend_id) OR id in (:friendable_id)",
-        friend_id: approved_friendship, friendable_id: approved_inverse_friendship)
+      # self.class.where("id in (:friend_id) OR id in (:friendable_id)", friend_id: approved_friendship, friendable_id: approved_inverse_friendship)
+      self.class.where("id in (:friendable_id)", friendable_id: approved_inverse_friendship)
     end
 
     # total # of invited and invited_by without association loading
